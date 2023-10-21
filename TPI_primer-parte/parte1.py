@@ -148,6 +148,7 @@ class Curso():
     def __init__(self, nombre_curso:str = None, contrasenia_matriculacion:str = None):
         self.__nombre_curso = nombre_curso
         self.__contrasenia_matriculacion = contrasenia_matriculacion
+        self.mi_cursos = []
 
     @property
     def nombre_curso(self):
@@ -166,6 +167,60 @@ class Curso():
         clave = ''.join(random.choice(characters) for i in range(8))
         return clave
 
+    def matricularse(self):
+        self.mostrar_cursos()
+        opcion = input("Ingrese el número del curso al que desea matricularse: ")
+        if opcion.isdigit():
+            codigo_curso = int(opcion)
+            if codigo_curso >= 1 and codigo_curso <= len(self.cursos):
+                curso_seleccionado = self.cursos[codigo_curso - 1]
+                nombre_curso = curso_seleccionado['nombre']
+                contraseña_correcta = curso_seleccionado['clave']
+                if nombre_curso not in self.mi_cursos:
+                    contraseña = input("Ingrese la contraseña de matriculación: ")
+                    if contraseña == contraseña_correcta:
+                        self.mi_cursos.append(nombre_curso)
+                        print("Matriculación exitosa")
+                    else:
+                        print("Contraseña incorrecta. Matriculación fallida.")
+                else:
+                    print("Ya estás matriculado en ese curso.")
+            else:
+                print("Opción inválida.")
+        else:
+            print("Opción inválida.")
+
+    def mostrar_cursos(self):
+        print("Cursos disponibles:")
+        for i, curso in enumerate(self.cursos, 1):
+            print(f"{i}. {curso['nombre']}")
+    
+    def mostrar_cursos_matriculados(self):
+        print("Cursos matriculados:")
+        if len(self.mi_cursos) > 0:
+            for curso in self.mi_cursos:
+                print(curso)
+            opcion = int(input("Ingrese el número del curso que desea ver: ")) #completar
+        else:
+            print("No estás matriculado en ningún curso.")
+    
+    def submenu_alumno(self):
+        while True:
+            print("Sub menú alumno:")
+            print("1. Matricularse a un curso")
+            print("2. Ver cursos matriculados")
+            print("3. Volver al menú principal")
+            opcion = input("Ingrese una opción: ")
+
+            if opcion == "1":
+                self.matricularse()
+            elif opcion == "2":
+                self.mostrar_cursos_matriculados()
+            elif opcion == "3":
+                self.ver_archivos_curso()
+                break
+            else:
+                print("Opción inválida.")
 
 rta = ''
 while rta!='salir':
@@ -189,6 +244,8 @@ while rta!='salir':
             print("MENU")
             print("MENU")
             print("MENU")
+            curso = Curso()
+            curso.submenu_alumno()
         else:
             print("La contraseña no coincide con el email ingresado.")
     elif opt == 2:
