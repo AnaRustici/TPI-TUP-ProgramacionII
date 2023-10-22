@@ -407,6 +407,23 @@ class Estudiante(Usuario):
                 print("Opción inválida.")
         else:
             print("Opción inválida.")
+    
+    def mostrar_cursos_matriculados(self):
+      if len(self.mi_cursos) > 0:
+        print("Cursos matriculados:")
+        for i, curso in enumerate(self.mi_cursos, 1):
+            print(f"{i}. {curso}")
+        opcion_curso = input("Ingrese el número del curso que desea ver: ")
+        if opcion_curso.isdigit():
+            codigo_curso = int(opcion_curso)
+            if codigo_curso >= 1 and codigo_curso <= len(self.mi_cursos):
+                print("Todavía no se encuentran disponibles los archivos.")
+            else:
+                print("Opción inválida.")
+        else:
+            print("Opción inválida.")
+      else:
+        print("No estás matriculado en ningún curso.")
 
 class Profesor(Usuario):
     def __init__(self, nombre: str, apellido: str, email: str, contrasenia: str, titulo: str = None, anio_egreso: int = None):
@@ -481,13 +498,7 @@ def submenu_alumno():
                 curso = Curso()
                 estudiante.matricular_en_curso(curso)
             elif opcion == "2":
-                print("Cursos matriculados:")
-                if len(estudiante.mi_cursos) > 0:
-                    for curso in estudiante.mi_cursos:
-                        print(curso)
-                    #opcion = int(input("Ingrese el número del curso que desea ver: ")) #completar
-                else:
-                    print("No estás matriculado en ningún curso.")
+                estudiante.mostrar_cursos_matriculados()
             elif opcion == "3":
                 rta_eleccion = 'salir'
             else:
