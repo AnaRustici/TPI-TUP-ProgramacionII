@@ -8,6 +8,7 @@ class Curso():
     def __init__(self, nombre_curso: str = None):
         self.__nombre_curso = nombre_curso
         self.__contrasenia_matriculacion = self.__generar_contrasenia()
+        self.__codigo = 0
         
         if nombre_curso is not None:
             self.nuevo_curso = {'nombre': self.__nombre_curso, 'clave': self.__contrasenia_matriculacion}
@@ -16,6 +17,14 @@ class Curso():
     @property
     def nombre_curso(self):
         return self.__nombre_curso
+    
+    @property
+    def codigo(self):
+        return self.__codigo
+    
+    @codigo.setter
+    def codigo(self):
+        self.__codigo += 1
     
     @property
     def contrasenia_matriculacion(self):
@@ -32,3 +41,6 @@ class Curso():
         characters = string.ascii_letters + string.digits
         clave = ''.join(random.choice(characters) for i in range(8))
         return clave
+    
+    def nuevo_archivo(self, archivo):
+        pass
