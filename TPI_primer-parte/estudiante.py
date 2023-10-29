@@ -1,5 +1,7 @@
 from usuario import Usuario
 from curso import Curso
+import glob
+
 
 class Estudiante(Usuario):
     alumnos = [
@@ -93,10 +95,36 @@ class Estudiante(Usuario):
             if opcion_curso.isdigit():
                 codigo_curso = int(opcion_curso)
                 if codigo_curso >= 1 and codigo_curso <= len(self.mi_cursos):
-                    print("Todavía no se encuentran disponibles los archivos.")
+                    curso_seleccionado = self.mi_cursos[codigo_curso - 1]
+                    carpeta_curso = f"{curso_seleccionado}_archivos"
+                    archivos = glob.glob(f"{carpeta_curso}/*")
+                    if archivos:
+                        print(f"Archivos del curso {curso_seleccionado}:")
+                        for archivo in archivos:
+                            print(archivo)
+                    else:
+                        print("No hay archivos disponibles para este curso.")
                 else:
                     print("Opción inválida.")
             else:
-                print("Opción inválida.")
+                print("No estás matriculado en ningún curso.")
+    
+    def desmatricularse_de_curso(self):
+        if not self.mi_cursos:
+            print("No estás matriculado en ningún curso.")
+            return
+
+        print("Cursos en los que estás matriculado:")
+        for i, curso in enumerate(self.mi_cursos, 1):
+            print(f"{i}. {curso}")
+
+        opcion = input("Ingrese el número del curso del que desea desmatricularse: ")
+
+        if opcion.isdigit() and 1 <= int(opcion) <= len(self.mi_cursos):
+            curso_desmatricular = self.mi_cursos[int(opcion) - 1]
+            self.mi_cursos.remove(curso_desmatricular)
+            print(f"Te has desmatriculado del curso: {curso_desmatricular}")
         else:
-          print("No estás matriculado en ningún curso.")
+            print("Opción inválida. Por favor, ingrese un número válido.")
+    
+    

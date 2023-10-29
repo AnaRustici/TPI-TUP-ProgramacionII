@@ -20,8 +20,9 @@ def submenu_alumno():
         while rta_eleccion != 'salir':
             print("Sub menú alumno:")
             print("1. Matricularse a un curso")
-            print("2. Ver cursos matriculados")
-            print("3. Volver al menú principal")
+            print("2. Desmatricularse a un curso")
+            print("3. Ver cursos matriculados")
+            print("4. Volver al menú principal")
             opcion = input("Ingrese una opción: ")
             print()
 
@@ -30,9 +31,11 @@ def submenu_alumno():
                 estudiante.matricular_en_curso(curso)
                 print()
             elif opcion == "2":
+                estudiante.desmatricularse_de_curso()
+            elif opcion == "3":
                 estudiante.mostrar_cursos_matriculados()
                 print()
-            elif opcion == "3":
+            elif opcion == "4":
                 rta_eleccion = 'salir'
             else:
                 print("Opción inválida. \n")
