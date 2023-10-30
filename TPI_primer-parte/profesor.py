@@ -1,5 +1,6 @@
 from usuario import Usuario
 from curso import Curso
+from archivo import Archivo
 
 class Profesor(Usuario):
     profesores = [
@@ -28,7 +29,7 @@ class Profesor(Usuario):
     def dictar_curso(self, curso: Curso):
         self.mis_cursos.append(curso)
         print("Curso agregado exitosamente. \n")
-        print(f"Nombre: {curso.nombre_curso} \nContraseña {curso.contrasenia_matriculacion}")
+        print(f"Nombre: {curso.nombre_curso} \nCódigo: {curso.codigo}\nContraseña {curso.contrasenia_matriculacion}")
         print()
 
     def mostrar_cursos(self):
@@ -39,7 +40,7 @@ class Profesor(Usuario):
         super().validar_credenciales(email, contrasenia)
         self.email_encontrado = False
 
-        for profe in self.profesores:
+        for profe in Profesor.profesores:
             if email == profe['email']:
                 self.email_encontrado = True
                 break

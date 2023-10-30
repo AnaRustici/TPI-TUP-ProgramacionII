@@ -1,6 +1,8 @@
 from curso import Curso
 from estudiante import Estudiante
 from profesor import Profesor
+from archivo import Archivo
+from carrera import Carrera
 
 def submenu_alumno():
     rta_eleccion = ''
@@ -27,7 +29,7 @@ def submenu_alumno():
             print()
 
             if opcion == "1":
-                curso = Curso()
+                curso = Curso(carrera)
                 estudiante.matricular_en_curso(curso)
                 print()
             elif opcion == "2":
@@ -68,7 +70,7 @@ def submenu_profesor():
 
             if eleccion == 1:
                 nombre_curso = str(input("Ingrese el nombre del curso: "))
-                curso = Curso(nombre_curso)
+                curso = Curso(carrera, nombre_curso)
                 profesor.dictar_curso(curso)
             elif eleccion == 2:
                 if profesor.mis_cursos == []:
@@ -80,7 +82,21 @@ def submenu_profesor():
                     if 1 <= curso_elegido <= len(profesor.mis_cursos):
                         curso_elegido = profesor.mis_cursos[curso_elegido - 1]
                         print(f"Nombre: {curso_elegido.nombre_curso}")
-                        print(f"Contraseña: {curso_elegido.contrasenia_matriculacion} \n")
+                        print(f"Código: {curso_elegido.codigo}")
+                        print(f"Contraseña: {curso_elegido.contrasenia_matriculacion}")
+                        print(f"Cantidad de archivos: {len(curso_elegido.archivos)} \n")
+                        
+                        print("Desea agregar un archivo adjunto? \n1. Sí \n2. No")
+                        op_elegida = int(input("Seleccione una opción: "))
+                        if op_elegida == 1:
+                            nombre = str(input("Nombre del archivo: "))
+                            formato = str(input("Formato: "))
+                            archivo = Archivo(nombre, formato)
+                            curso.nuevo_archivo(curso_elegido, archivo)
+                        elif op_elegida == 2:
+                            print()
+                        else:
+                            print("Opción inválida. \n")
                     else:
                         print("Opción no válida. Por favor, ingrese un número de curso válido. \n")
             elif eleccion == 3:
@@ -91,7 +107,8 @@ def submenu_profesor():
         print("Contraseña incorrecta o profesor inexistente. Debe registrarse en alumnado. \n")
 
 
-curso = Curso()
+carrera = Carrera('Tecnicatura Universitaria en Programación', 2)
+curso = Curso(carrera)
 rta = ''
 while rta != 'salir':
     print("1. Ingresar como alumno")
@@ -109,8 +126,8 @@ while rta != 'salir':
         if curso.cursos == []:
             print("No hay cursos disponibles.")
             print()
-        else:
-            print(curso)  
+        else: 
+            curso.__str__()
     elif opt == 4:
         rta = 'salir'
     else:

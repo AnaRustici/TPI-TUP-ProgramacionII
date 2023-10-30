@@ -31,7 +31,7 @@ class Estudiante(Usuario):
         super().validar_credenciales(email, contrasenia)
         self.email_encontrado = False
         
-        for alumno in self.alumnos:
+        for alumno in Estudiante.alumnos:
             if email == alumno['email']:
                 self.email_encontrado = True
                 break
@@ -109,7 +109,7 @@ class Estudiante(Usuario):
             else:
                 print("No estás matriculado en ningún curso.")
     
-    def desmatricularse_de_curso(self):
+    def desmatricularse_de_curso(self, curso: Curso):
         if not self.mi_cursos:
             print("No estás matriculado en ningún curso.")
             return
