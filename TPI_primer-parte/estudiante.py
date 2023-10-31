@@ -1,7 +1,7 @@
 from usuario import Usuario
 from curso import Curso
 import glob
-
+from archivo import Archivo
 
 class Estudiante(Usuario):
     alumnos = [
@@ -83,11 +83,12 @@ class Estudiante(Usuario):
         else:
             print("No hay cursos disponibles.")
     
-    def mostrar_cursos_matriculados(self):
+
+   def mostrar_cursos_matriculados(self, curso: Curso, archivo):
         if len(self.mi_cursos) > 0:
             print("Cursos matriculados:")
-            for i, curso in enumerate(self.mi_cursos, 1):
-                print(f"{i}. {curso}")
+            for i, curso_matriculado in enumerate(self.mi_cursos, 1):
+                print(f"{i}. {curso_matriculado}")
             print()
 
             opcion_curso = input("Ingrese el número del curso que desea ver: ")
@@ -96,19 +97,21 @@ class Estudiante(Usuario):
                 codigo_curso = int(opcion_curso)
                 if codigo_curso >= 1 and codigo_curso <= len(self.mi_cursos):
                     curso_seleccionado = self.mi_cursos[codigo_curso - 1]
-                    carpeta_curso = f"{curso_seleccionado}_archivos"
-                    archivos = glob.glob(f"{carpeta_curso}/*")
+                    archivos = archivo.obtener_archivos_curso(curso_seleccionado)
                     if archivos:
                         print(f"Archivos del curso {curso_seleccionado}:")
-                        for archivo in archivos:
-                            print(archivo)
+                        for archivo_curso in archivos:
+                            print(archivo_curso)
                     else:
                         print("No hay archivos disponibles para este curso.")
                 else:
                     print("Opción inválida.")
             else:
-                print("No estás matriculado en ningún curso.")
-    
+                print("Opción inválida.")
+        else:
+            print("No estás matriculado en ningún curso.")
+
+
     def desmatricularse_de_curso(self, curso: Curso):
         if not self.mi_cursos:
             print("No estás matriculado en ningún curso.")

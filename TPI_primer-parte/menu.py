@@ -35,7 +35,7 @@ def submenu_alumno():
             elif opcion == "2":
                 estudiante.desmatricularse_de_curso()
             elif opcion == "3":
-                estudiante.mostrar_cursos_matriculados()
+                estudiante.mostrar_cursos_matriculados(curso, archivo)
                 print()
             elif opcion == "4":
                 rta_eleccion = 'salir'
@@ -119,7 +119,7 @@ while rta != 'salir':
     print()
 
     if opt == 1:
-        submenu_alumno()
+        submenu_alumno() 
     elif opt == 2:
         submenu_profesor()
     elif opt == 3:
