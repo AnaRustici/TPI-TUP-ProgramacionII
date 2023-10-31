@@ -83,8 +83,7 @@ class Estudiante(Usuario):
         else:
             print("No hay cursos disponibles.")
     
-
-   def mostrar_cursos_matriculados(self, curso: Curso, archivo):
+    def mostrar_cursos_matriculados(self, curso: Curso):
         if len(self.mi_cursos) > 0:
             print("Cursos matriculados:")
             for i, curso_matriculado in enumerate(self.mi_cursos, 1):
@@ -94,23 +93,19 @@ class Estudiante(Usuario):
             opcion_curso = input("Ingrese el número del curso que desea ver: ")
             print()
             if opcion_curso.isdigit():
-                codigo_curso = int(opcion_curso)
-                if codigo_curso >= 1 and codigo_curso <= len(self.mi_cursos):
-                    curso_seleccionado = self.mi_cursos[codigo_curso - 1]
-                    archivos = archivo.obtener_archivos_curso(curso_seleccionado)
-                    if archivos:
-                        print(f"Archivos del curso {curso_seleccionado}:")
-                        for archivo_curso in archivos:
-                            print(archivo_curso)
-                    else:
-                        print("No hay archivos disponibles para este curso.")
+                indice_curso = int(opcion_curso) - 1
+                if indice_curso >= 0 and indice_curso < len(self.mi_cursos):
+                    curso_seleccionado = self.mi_cursos[indice_curso]
+                    print(f"Archivos del curso {curso_seleccionado}:")
+                    archivos = curso_seleccionado.obtener_archivos()
+                    for i, archivo in enumerate(archivos, 1):
+                        print(f"{i}. {archivo}")
                 else:
-                    print("Opción inválida.")
+                    print("Opción de curso inválida.")
             else:
-                print("Opción inválida.")
+                print("Ingrese un número válido para seleccionar el curso.")
         else:
-            print("No estás matriculado en ningún curso.")
-
+            print("No tiene cursos matriculados.")
 
     def desmatricularse_de_curso(self, curso: Curso):
         if not self.mi_cursos:

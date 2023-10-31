@@ -23,9 +23,5 @@ class Archivo():
     def __str__(self) -> str:
         return f"Nombre: {self.__nombre} \nFecha: {self.__fecha_actual} \nFormato: {self.__formato}"
     
-    def obtener_archivos_curso(curso):
-        archivos = []
-        for archivo in curso.archivos:
-            archivos.append(archivo.nombre)
-        return archivos
+
         

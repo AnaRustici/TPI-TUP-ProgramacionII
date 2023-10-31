@@ -33,9 +33,9 @@ def submenu_alumno():
                 estudiante.matricular_en_curso(curso)
                 print()
             elif opcion == "2":
-                estudiante.desmatricularse_de_curso()
+                estudiante.desmatricularse_de_curso(curso)
             elif opcion == "3":
-                estudiante.mostrar_cursos_matriculados(curso, archivo)
+                estudiante.mostrar_cursos_matriculados(curso)
                 print()
             elif opcion == "4":
                 rta_eleccion = 'salir'

@@ -50,3 +50,6 @@ class Curso():
                 curso['archivos'].append(nuevo_archivo)
                 break
     
+    def obtener_archivos(self):
+        return self.archivos
+    
