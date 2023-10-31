@@ -91,18 +91,21 @@ class Estudiante(Usuario):
     def mostrar_cursos_matriculados(self):
         if len(self.mi_cursos) > 0:
             print("Cursos matriculados:")
-            for i, curso in enumerate(self.mi_cursos, 1):
+            for i, curso in enumerate(self.mi_cursos, 1): 
                 print(f"{i}. {curso['nombre']}")
             print()
-
+            # Solicita al usuario el número del curso que desea ver
             opcion_curso = input("Ingrese el número del curso que desea ver: ")
             print()
             if opcion_curso.isdigit():
                 codigo_curso = int(opcion_curso)
+                # Verifica si el número del curso seleccionado es válido
                 if codigo_curso >= 1 and codigo_curso <= len(self.mi_cursos):
                     curso_select = codigo_curso - 1
+                     # Busca el curso seleccionado en la lista de cursos
                     for curso in Curso.cursos:
-                        if self.mi_cursos[curso_select]['nombre'] == curso['nombre']: 
+                        if self.mi_cursos[curso_select]['nombre'] == curso['nombre']:
+                            # Verifica si el curso tiene archivos asociados 
                             if len(curso['archivos']) > 0:
                                 print(curso['nombre'])
                                 for arch in curso['archivos']:
@@ -120,20 +123,21 @@ class Estudiante(Usuario):
             print("No estás matriculado en ningún curso.")
 
     def desmatricularse_de_curso(self, curso: Curso):
-        if not self.mi_cursos:
+        if not self.mi_cursos:  # Verifica si no hay cursos matriculados
             print("No estás matriculado en ningún curso.")
             return
 
         print("Cursos en los que estás matriculado:")
         for i, curso in enumerate(self.mi_cursos, 1):
             print(f"{i}. {curso['nombre']}")
-
+        # Solicita al usuario el número del curso del que desea desmatricularse
         opcion = input("Ingrese el número del curso del que desea desmatricularse: ")
         print()
 
         if opcion.isdigit() and 1 <= int(opcion) <= len(self.mi_cursos):
             curso_desmatricular = self.mi_cursos[int(opcion) - 1]
             self.mi_cursos.remove(curso_desmatricular)
+            # Elimina el curso seleccionado de la lista de cursos matriculados
             print(f"Te has desmatriculado del curso: {curso_desmatricular['nombre']}")
         else:
             print("Opción inválida. Por favor, ingrese un número válido.")
