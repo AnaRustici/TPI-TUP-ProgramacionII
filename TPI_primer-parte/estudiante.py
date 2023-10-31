@@ -1,7 +1,5 @@
 from usuario import Usuario
 from curso import Curso
-import glob
-from archivo import Archivo
 
 class Estudiante(Usuario):
     alumnos = [
@@ -30,13 +28,14 @@ class Estudiante(Usuario):
     def validar_credenciales(self, email: str, contrasenia: str):
         super().validar_credenciales(email, contrasenia)
         self.email_encontrado = False
-        
+        #Primero buscamos el email en la lista de profesores
         for alumno in Estudiante.alumnos:
             if email == alumno['email']:
                 self.email_encontrado = True
                 break
 
         if self.email_encontrado:
+            #Si se encuentra el email, validamos la contraseña
             if contrasenia == alumno['contrasenia']:
                 return True
             else:
@@ -45,32 +44,38 @@ class Estudiante(Usuario):
             return False
     
     def matricular_en_curso(self, curso: Curso):
-        self.cursos_disponibles = False
-
+        cursos_disponibles = False
+        #Validamos que haya cursos disponibles. Si los hay, se muestran
         if curso.cursos == []:
-            self.cursos_disponibles = False
+            cursos_disponibles = False
         else:
-            self.cursos_disponibles = True
+            cursos_disponibles = True
             print("Cursos disponibles:")
             for i, cur in enumerate(curso.cursos, 1):
                 print(f"{i}. {cur['nombre']}")
         
         print()
 
-        if self.cursos_disponibles:
+        if cursos_disponibles:
             opcion = input("Ingrese el número del curso al que desea matricularse: ")
             print()
+            #Validamos que la opción elegida sea un número
             if opcion.isdigit():
-                codigo_curso = int(opcion)
-                if codigo_curso >= 1 and codigo_curso <= len(curso.cursos):
-                    curso_seleccionado = curso.cursos[codigo_curso - 1]
+                #Asignamos la opción a una nueva variable para hacer las validaciones correspondientes
+                opcion_curso = int(opcion)
+                if opcion_curso >= 1 and opcion_curso <= len(curso.cursos):
+                    #Asignamos el curso que se eligió a una nueva variable, restándole 1, ya que cuando se muestran los cursos el índice arranca en 1
+                    curso_seleccionado = curso.cursos[opcion_curso - 1]
                     nombre_curso = curso_seleccionado['nombre']
                     contraseña_correcta = curso_seleccionado['clave']
-                    if nombre_curso not in self.mi_cursos:
+                    curso_matric = {'nombre': nombre_curso, 'clave': contraseña_correcta}
+                    #Validamos que el curso no esté ya en la lista de cursos del alumno
+                    if curso_matric not in self.mi_cursos:
                         contraseña = input("Ingrese la contraseña de matriculación: ")
                         print()
+                        #Validamos que la contraseña del curso sea la correcta y lo agregamos a la lista de cursos del alumno
                         if contraseña == contraseña_correcta:
-                            self.mi_cursos.append(nombre_curso)
+                            self.mi_cursos.append(curso_matric)
                             print("Matriculación exitosa")
                         else:
                             print("Contraseña incorrecta. Matriculación fallida.")
@@ -83,29 +88,36 @@ class Estudiante(Usuario):
         else:
             print("No hay cursos disponibles.")
     
-    def mostrar_cursos_matriculados(self, curso: Curso):
+    def mostrar_cursos_matriculados(self):
         if len(self.mi_cursos) > 0:
             print("Cursos matriculados:")
-            for i, curso_matriculado in enumerate(self.mi_cursos, 1):
-                print(f"{i}. {curso_matriculado}")
+            for i, curso in enumerate(self.mi_cursos, 1):
+                print(f"{i}. {curso['nombre']}")
             print()
 
             opcion_curso = input("Ingrese el número del curso que desea ver: ")
             print()
             if opcion_curso.isdigit():
-                indice_curso = int(opcion_curso) - 1
-                if indice_curso >= 0 and indice_curso < len(self.mi_cursos):
-                    curso_seleccionado = self.mi_cursos[indice_curso]
-                    print(f"Archivos del curso {curso_seleccionado}:")
-                    archivos = curso_seleccionado.obtener_archivos()
-                    for i, archivo in enumerate(archivos, 1):
-                        print(f"{i}. {archivo}")
+                codigo_curso = int(opcion_curso)
+                if codigo_curso >= 1 and codigo_curso <= len(self.mi_cursos):
+                    curso_select = codigo_curso - 1
+                    for curso in Curso.cursos:
+                        if self.mi_cursos[curso_select]['nombre'] == curso['nombre']: 
+                            if len(curso['archivos']) > 0:
+                                print(curso['nombre'])
+                                for arch in curso['archivos']:
+                                    print(arch)
+                                print()
+                            else:
+                                print("No hay archivos disponibles para este curso.")
+                                print()
+                            break
                 else:
-                    print("Opción de curso inválida.")
+                    print("Opción inválida.")
             else:
-                print("Ingrese un número válido para seleccionar el curso.")
+                print("Opción inválida.")
         else:
-            print("No tiene cursos matriculados.")
+            print("No estás matriculado en ningún curso.")
 
     def desmatricularse_de_curso(self, curso: Curso):
         if not self.mi_cursos:
@@ -114,14 +126,15 @@ class Estudiante(Usuario):
 
         print("Cursos en los que estás matriculado:")
         for i, curso in enumerate(self.mi_cursos, 1):
-            print(f"{i}. {curso}")
+            print(f"{i}. {curso['nombre']}")
 
         opcion = input("Ingrese el número del curso del que desea desmatricularse: ")
+        print()
 
         if opcion.isdigit() and 1 <= int(opcion) <= len(self.mi_cursos):
             curso_desmatricular = self.mi_cursos[int(opcion) - 1]
             self.mi_cursos.remove(curso_desmatricular)
-            print(f"Te has desmatriculado del curso: {curso_desmatricular}")
+            print(f"Te has desmatriculado del curso: {curso_desmatricular['nombre']}")
         else:
             print("Opción inválida. Por favor, ingrese un número válido.")
     

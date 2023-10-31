@@ -4,8 +4,10 @@ from profesor import Profesor
 from archivo import Archivo
 from carrera import Carrera
 
+
 def submenu_alumno():
     rta_eleccion = ''
+    #Ingresamos los datos
     print("Ha ingresado como alumno.")
     print("Ingrese los siguientes datos: ")
     nombre = str(input("Nombre: "))
@@ -15,7 +17,7 @@ def submenu_alumno():
     legajo = int(input("Legajo: "))
     anio_insc_carrera = int(input("Año de inscripción a la carrera: "))
     print()
-
+    #Instanciamos la clase Estudiante con los datos obtenidos
     estudiante = Estudiante(nombre, apellido, email, contrasenia, legajo, anio_insc_carrera)
     if estudiante.validar_credenciales(email, contrasenia):
         print("Email y contraseña son correctos. \n")
@@ -29,13 +31,13 @@ def submenu_alumno():
             print()
 
             if opcion == "1":
-                curso = Curso(carrera)
                 estudiante.matricular_en_curso(curso)
                 print()
             elif opcion == "2":
                 estudiante.desmatricularse_de_curso(curso)
+                print()
             elif opcion == "3":
-                estudiante.mostrar_cursos_matriculados(curso)
+                estudiante.mostrar_cursos_matriculados()
                 print()
             elif opcion == "4":
                 rta_eleccion = 'salir'
@@ -47,6 +49,7 @@ def submenu_alumno():
 
 def submenu_profesor():
     rta_eleccion = ''
+    #Ingresamos los datos
     print("Ha ingresado como profesor.")
     print("Ingrese los siguientes datos: ")
     nombre = str(input("Nombre: "))
@@ -56,7 +59,7 @@ def submenu_profesor():
     titulo = str(input("Título: "))
     anio_egreso = int(input("Año de egreso: "))
     print()
-
+    #Instanciamos la clase Estudiante con los datos obtenidos
     profesor = Profesor(nombre, apellido, email, contrasenia, titulo, anio_egreso)
     if profesor.validar_credenciales(email, contrasenia):
         print("Email y contraseña son correctos. \n")
@@ -79,8 +82,10 @@ def submenu_profesor():
                     profesor.mostrar_cursos()
                     curso_elegido = int(input("Seleccione un curso: "))
                     print()
+                    #Validamos que se ingrese una opción válida
                     if 1 <= curso_elegido <= len(profesor.mis_cursos):
-                        curso_elegido = profesor.mis_cursos[curso_elegido - 1]
+                        curso_elegido = profesor.mis_cursos[curso_elegido - 1] #Se resta 1 ya que al mostrar los cursos el índice se muestra a partir de 1
+                        #Mostramos los datos de acuerdo a la opción elegida
                         print(f"Nombre: {curso_elegido.nombre_curso}")
                         print(f"Código: {curso_elegido.codigo}")
                         print(f"Contraseña: {curso_elegido.contrasenia_matriculacion}")
@@ -88,11 +93,13 @@ def submenu_profesor():
                         
                         print("Desea agregar un archivo adjunto? \n1. Sí \n2. No")
                         op_elegida = int(input("Seleccione una opción: "))
+                        print()
                         if op_elegida == 1:
                             nombre = str(input("Nombre del archivo: "))
                             formato = str(input("Formato: "))
                             archivo = Archivo(nombre, formato)
                             curso.nuevo_archivo(curso_elegido, archivo)
+                            print()
                         elif op_elegida == 2:
                             print()
                         else:
@@ -107,6 +114,7 @@ def submenu_profesor():
         print("Contraseña incorrecta o profesor inexistente. Debe registrarse en alumnado. \n")
 
 
+#Instanciamos las clases Carrera y Curso
 carrera = Carrera('Tecnicatura Universitaria en Programación', 2)
 curso = Curso(carrera)
 rta = ''
@@ -128,6 +136,7 @@ while rta != 'salir':
             print()
         else: 
             curso.__str__()
+            print()
     elif opt == 4:
         rta = 'salir'
     else:
